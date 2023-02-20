@@ -5,7 +5,8 @@ const allOn = () => {
 const convertTimeToOpacity = ({ elapsedTime, maxTime, chosenNodes }) => {
   const allPieces = getPieces();
   const percentageRemaining = (maxTime - elapsedTime) / maxTime;
-  const opacity = percentageRemaining * 0.5 + 0.5;
+  const opacity =
+    percentageRemaining > 0.9 ? 0.7 : percentageRemaining > 0.3 ? 0.3 : 0.01;
 
   for (let i = 0; i < allPieces.length; i++) {
     // if the piece is not in the chosenNodes, set opacity to 1
@@ -18,11 +19,10 @@ const convertTimeToOpacity = ({ elapsedTime, maxTime, chosenNodes }) => {
 };
 
 const countDownOnChosenNodes = ({ chosenNodes, maxTime }) => {
-  console.log("counting down on ", chosenNodes);
   const currentPuzzleCount = puzzleCount;
   let elapsedTime = 0;
   const countdownInterval = setInterval(() => {
-    console.log("elapsedTime", elapsedTime);
+    console.log("running on puzzle", currentPuzzleCount);
     elapsedTime += increment;
     if (currentPuzzleCount !== puzzleCount || elapsedTime > maxTime) {
       clearInterval(countdownInterval);
@@ -44,8 +44,11 @@ document.addEventListener("click", function (event) {
       event.target.classList.contains("arrow-right"))
   ) {
     allOn();
-    const chosenNodes = chooseNrandomPieces(8);
-
+    const chosenNodes = chooseNrandomPieces(piecesToHide);
     puzzleCount++;
+    countDownOnChosenNodes({
+      chosenNodes,
+      maxTime: timeoutLength,
+    });
   }
 });

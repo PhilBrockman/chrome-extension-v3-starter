@@ -16,18 +16,36 @@ HUD.appendChild(buttonContainer);
 
 // create a button to set the opacity to 0
 const opacity0 = document.createElement("button");
-opacity0.textContent = "Opacity 0";
-// opacity0.addEventListener("click", toggleOpacityOff);
+opacity0.textContent = "show all pieces";
+opacity0.addEventListener("click", allOn());
 buttonContainer.appendChild(opacity0);
 
 // create a button to set the opacity to 1
 const opacity1 = document.createElement("button");
-opacity1.textContent = "Opacity 1";
+opacity1.textContent = "hide some pieces";
 opacity1.addEventListener("click", () => {
-  const chosenNodes = chooseNrandomPieces(8);
+  const chosenNodes = chooseNrandomPieces(piecesToHide);
   countDownOnChosenNodes({
     chosenNodes,
-    maxTime: 5 * 1000,
+    maxTime: timeoutLength,
   });
 });
 buttonContainer.appendChild(opacity1);
+
+// create an input field to modify the value of "timeoutLength"
+const timeoutLengthInput = document.createElement("input");
+timeoutLengthInput.type = "number";
+timeoutLengthInput.value = timeoutLength;
+timeoutLengthInput.addEventListener("change", (e) => {
+  timeoutLength = e.target.value;
+});
+buttonContainer.appendChild(timeoutLengthInput);
+
+// create an input field to modify the value of "piecesToHide"
+const piecesToHideInput = document.createElement("input");
+piecesToHideInput.type = "number";
+piecesToHideInput.value = piecesToHide;
+piecesToHideInput.addEventListener("change", (e) => {
+  piecesToHide = e.target.value;
+});
+buttonContainer.appendChild(piecesToHideInput);
